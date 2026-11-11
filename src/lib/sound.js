@@ -67,6 +67,7 @@ const NOTE = (n) => 440 * Math.pow(2, (n - 69) / 12)
 
 export const sfx = {
   pop() { tone({ freq: 900, freqEnd: 300, dur: 0.12, vol: 0.35, type: 'sine' }) },
+  blip(n = 0) { tone({ freq: NOTE(62 + n), dur: 0.09, vol: 0.2, type: 'triangle' }) },
   tick() { tone({ freq: 1400, dur: 0.05, vol: 0.15, type: 'triangle' }) },
   click() { tone({ freq: 600, freqEnd: 900, dur: 0.07, vol: 0.2, type: 'triangle' }) },
   // ¡Clack! de la cámara

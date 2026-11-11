@@ -1,6 +1,6 @@
 import { Portada, Pregunta, Lupa, Superpoder, Espejo } from './s1.jsx'
 import { Fotografa, Patio, CamaraMagica } from './s2.jsx'
-import { AdivinaIntro, ContarDedos, Perro, Gato, Pez, Osito, RobotSlide, Galeria } from './s3.jsx'
+import { AdivinaIntro, CuantosHuesos, Perro, Gato, Murcielago, RobotSlide, Galeria } from './s3.jsx'
 import { Borrosa, Estatua } from './s4.jsx'
 import { Armadura, Balanza } from './s5.jsx'
 import { NoMiedo, Medalla, Adios } from './s6.jsx'
@@ -17,8 +17,8 @@ export const SLIDES = [
     notes: '«¡Mirad mi lupa mágica!» Mueve el ratón por la mano y la lupa enseña los huesos (si no lo mueves, se pasea sola).\n(clic) ¡Se ven todos los huesos!' },
   { id: 'superpoder', section: 1, title: '¡Tengo visión de Rayos X!', C: Superpoder, steps: 1,
     notes: '«¡Tengo el poder de la visión de Rayos X, como los superhéroes!»\n· Si tocas a la superheroína, da una vuelta.' },
-  { id: 'espejo', section: 1, title: 'Sorpresa: el espejo de rayos X', C: Espejo, steps: 2,
-    notes: '«¿Queréis que os mire con mis rayos X?»\n(clic o botón) Se enciende la cámara del portátil con efecto rayos X y los peques se ven en la pantalla.\n· Si la cámara no funciona, salen esqueletos bailando. Pruébala antes en Ajustes (tecla S).' },
+  { id: 'espejo', section: 1, title: 'Sorpresa: el espejo de rayos X', C: Espejo, steps: 2, skipIf: ({ settings }) => !settings.camara,
+    notes: '«¿Queréis que os mire con mis rayos X?»\n(clic o botón) Se enciende la cámara del portátil con efecto rayos X y los peques se ven en la pantalla.\n· Solo aparece si activas la cámara en Ajustes (tecla S). Si aun así falla, salen esqueletos bailando.' },
 
   // 2. ¿QUÉ ES UN TÉCNICO DE RAYOS? (≈5 min)
   { id: 'fotografa', section: 2, title: 'Fotógrafa de huesos', C: Fotografa, steps: 4,
@@ -31,16 +31,14 @@ export const SLIDES = [
   // 3. ADIVINA EL ESQUELETO (≈10 min)
   { id: 'adivina', section: 3, title: '¡Adivina el esqueleto!', C: AdivinaIntro, steps: 1,
     notes: '«Ahora vamos a jugar. Yo os enseño fotos de huesos y vosotros adivináis de quién son.»' },
-  { id: 'mano', section: 3, title: 'Una mano: ¡a contar dedos!', C: ContarDedos, steps: 8,
-    notes: '«¿Qué es esto?» (dejar que adivinen)\n(clic) «¡Una mano!»\n(5 clics) Contamos los dedos de la foto juntos: 1, 2, 3, 4, 5.\n(clic) «¿Y vosotros? ¡Contad los vuestros!»' },
+  { id: 'mano', section: 3, title: 'Una mano: ¿cuántos huesos?', C: CuantosHuesos, steps: 4,
+    notes: '«¿Qué es esto?» (dejar que adivinen)\n(clic) «¡Una mano!»\n(clic) «¿Cuántos huesos creéis que tiene una mano? ¿5? ¿10? ¿100?» (que digan números)\n(clic) Los huesos se encienden uno a uno y el número sube solo hasta… «¡27 huesos! ¡Y otros 27 en la otra mano!»' },
   { id: 'perro', section: 3, title: '¿Quién es? Un perro', C: Perro, steps: 2,
     notes: '«¿De quién son estos huesos?» (dejar que adivinen: tiene cola, cuatro patas…)\n(clic o tocar la foto) «¡Un perro! Los animales también tienen huesos.»' },
   { id: 'gato', section: 3, title: '¿Quién es? Un gato', C: Gato, steps: 2,
     notes: '«¿Y este? Tiene una cola muuuy larga y orejas puntiagudas…»\n(clic) «¡Un gato!»' },
-  { id: 'pez', section: 3, title: '¿Quién es? Un pez', C: Pez, steps: 2,
-    notes: '«¿Y este? ¡No tiene patas!»\n(clic) «¡Un pez! Tiene muchas espinas, que son sus huesos.»' },
-  { id: 'osito', section: 3, title: '¿Quién es? Un osito (¡sin huesos!)', C: Osito, steps: 3,
-    notes: '«¿Y esto? Mmm… ¡aquí no se ven huesos!»\n(clic) «¡Un osito de peluche!»\n(clic) «Los peluches no tienen huesos: solo algodón… ¡y mucho cariño!»' },
+  { id: 'murcielago', section: 3, title: '¿Quién es? Un murciélago (¡el difícil!)', C: Murcielago, steps: 3,
+    notes: '«¡Este es muy difícil! ¿Quién será?» (pistas: tiene orejas grandes, vuela de noche, duerme boca abajo…)\n(clic o tocar la foto) «¡Un murciélago!»\n(clic) «¿Veis sus alas? ¡Son manos con dedos larguísimos! Tienen huesos como los nuestros.»' },
   { id: 'galeria', section: 3, title: 'Tus radiografías', C: Galeria,
     steps: ({ photos }) => Math.max(1, photos.length * 2), skipIf: ({ photos }) => photos.length === 0,
     notes: 'Tus propias radiografías (las añades en Ajustes, tecla S).\nCada foto: (clic) se muestra la respuesta que escribiste.' },
@@ -51,7 +49,7 @@ export const SLIDES = [
   { id: 'borrosa', section: 4, title: 'Si te mueves, sale borrosa', C: Borrosa, steps: 4,
     notes: '«Para que la foto de los huesos salga guapa y no salga borrosa…»\n(clic) Si nos movemos: ¡CLACK! sale borrosa.\n(clic) «…hay que hacer el juego de la estatua.»\n(clic) Quietos: ¡CLACK! ¡foto perfecta!' },
   { id: 'estatua', section: 4, title: '¡Juego de la estatua!', C: Estatua, steps: 4,
-    notes: 'Suena música: ¡a bailar todos! (los peques pueden levantarse)\n«¡A la de tres, todos nos convertimos en estatuas de hielo! Una… (clic) dos… (clic) y… ¡TRES!» (clic)\nSe congelan 5 segundos, ¡CLACK! y «¡Perfecto! Así es exactamente como me ayudan los niños valientes en el hospital.»\n· Si la cámara está encendida, sale una foto de la clase en rayos X. «¡Otra vez!» repite el juego.' },
+    notes: 'Suena música: ¡a bailar todos! (los peques pueden levantarse)\n«¡A la de tres, todos nos convertimos en estatuas de hielo! Una… (clic) dos… (clic) y… ¡TRES!» (clic)\nSe congelan 5 segundos, ¡CLACK! y «¡Perfecto! Así es exactamente como me ayudan los niños valientes en el hospital.»\n· Si activaste la cámara en Ajustes, sale una foto de la clase en rayos X. «¡Otra vez!» repite el juego.' },
 
   // 5. EL SÚPER TRAJE DE PLOMO (≈5 min)
   { id: 'armadura', section: 5, title: 'La armadura mágica', C: Armadura, steps: 3,

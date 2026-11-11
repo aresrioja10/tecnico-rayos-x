@@ -193,6 +193,11 @@ button { font-family: inherit; }
 .panel .btn.ghost { background: transparent; border: 2px solid rgba(255,255,255,0.3); }
 .panel .btn.red { background: #c93a4a; }
 .panel .muted { color: #a9bedf; font-size: 15px; }
+.panel .switch-row {
+  display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; border-radius: 14px;
+  background: #13294f; border: 2px solid rgba(255,255,255,0.1); cursor: pointer;
+}
+.panel .switch-row input { width: 24px; height: 24px; margin: 2px 0 0; flex: none; accent-color: var(--yellow); cursor: pointer; }
 .panel kbd {
   display: inline-block; min-width: 28px; text-align: center; padding: 2px 8px; border-radius: 8px;
   background: #213d6e; border: 1px solid #3a5f9e; font-family: inherit; font-size: 14px;

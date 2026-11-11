@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useClock, useSince, addPose, prog, easeOut, clamp } from '../lib/anim.js'
 import { Skeleton, POSES } from '../art/Figure.jsx'
-import { HandXray, HandSkin, FINGERS, tipOf } from '../art/Hand.jsx'
-import { Dog, Cat, Fish, Teddy, Robot } from '../art/Animals.jsx'
+import { HandXray, HandBonesLit, HAND_BONES } from '../art/Hand.jsx'
+import { Dog, Cat, Fish, Teddy, Bat, Robot } from '../art/Animals.jsx'
 import { Lightbox } from '../art/Machine.jsx'
 import { Bouncy, Pop, Sparkles, Sunburst, useOnStep, useOnMount } from './ui.jsx'
 import { sfx } from '../lib/sound.js'
@@ -71,48 +71,51 @@ export function AdivinaIntro() {
   )
 }
 
-// ---------------------------------------------------------------- LA MANO: CONTAR DEDOS
-export function ContarDedos({ step }) {
+// ---------------------------------------------------------------- LA MANO: ¿CUÁNTOS HUESOS?
+const HAND_TOTAL = HAND_BONES.length // 27
+const BONE_EVERY = 0.16 // segundos entre hueso y hueso al contar
+
+export function CuantosHuesos({ step }) {
   const t = useClock()
-  const count = clamp(step - 1, 0, 5)
+  const since = useSince(step >= 3, t)
+  const lit = step >= 3 ? clamp(Math.floor(since / BONE_EVERY), 0, HAND_TOTAL) : 0
+  const done = lit === HAND_TOTAL
   useOnStep(step, 1, () => { sfx.tada(); burst(0.5, 0.4, { particleCount: 50 }) })
-  ;[2, 3, 4, 5, 6].forEach((k) => useOnStep(step, k, () => sfx.ding(k - 2))) // eslint-disable-line react-hooks/rules-of-hooks
-  useOnStep(step, 7, () => { sfx.fanfare(); burst(0.5, 0.5) })
-  // la mano (600x820) cabe en la película: escala y desplazamiento
-  const iw = BOX.w - 80, ih = BOX.h - 80
-  const s = Math.min(iw / 600, ih / 820)
-  const ox = BOX.x + 40 + (iw - 600 * s) / 2, oy = BOX.y + 40 + (ih - 820 * s) / 2
-  const tips = FINGERS.map((f, i) => tipOf(f, i === 0 ? 40 : 70 + Math.abs(i - 2) * 6)).map(([x, y]) => [ox + x * s, oy + y * s])
-  const title = step === 0 ? '¿Qué es esto?' : step === 1 ? '¡Una mano!' : step < 7 ? '¿Cuántos dedos?' : '¡Cinco dedos!'
-  const wave = Math.sin(t * 6) * 12
+  useOnStep(step, 2, () => sfx.magic())
+  const lastLit = React.useRef(0)
+  useEffect(() => {
+    if (lit > lastLit.current) {
+      if (lit === HAND_TOTAL) { sfx.fanfare(); burst(0.5, 0.5); setTimeout(() => burst(0.2, 0.6), 250); setTimeout(() => burst(0.8, 0.6), 450) } else sfx.blip(lit)
+    }
+    lastLit.current = lit
+  }, [lit])
+  const title = step === 0 ? '¿Qué es esto?' : step === 1 ? '¡Una mano!' : step === 2 ? '¿Cuántos huesos tiene?' : done ? '¡27 huesos!' : '¡Vamos a contar!'
+  const guesses = ['¿5?', '¿10?', '¿100?']
   return (
     <>
       <svg className="full" viewBox="0 0 1920 1080">
         <g transform={`translate(${BOX.x} ${BOX.y})`}>
           <Lightbox w={BOX.w} h={BOX.h}>
-            <FilmArea vb="0 0 600 820"><HandXray /></FilmArea>
+            <FilmArea vb="0 0 600 820">
+              <HandXray />
+              <HandBonesLit n={lit} />
+            </FilmArea>
           </Lightbox>
         </g>
-        {tips.slice(0, count).map(([x, y], i) => (
-          <g key={i} transform={`translate(${x} ${y})`}>
-            <motion.g initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 400, damping: 12 }}>
-              <circle cx={0} cy={0} r={38} fill="#ffd23f" stroke="#c98a00" strokeWidth={6} />
-              <text x={0} y={17} textAnchor="middle" fontSize={50} fontWeight={700} fill="#1b2b4a" style={{ fontFamily: 'var(--font)' }}>{i + 1}</text>
-            </motion.g>
-          </g>
-        ))}
-        {step >= 7 && (
-          <>
-            <g transform={`translate(1560 520) rotate(${wave} 150 700) scale(0.5)`}><HandSkin /></g>
-            <g transform={`translate(60 520) rotate(${-wave} 150 700) scale(0.5) translate(600 0) scale(-1 1)`}><HandSkin /></g>
-          </>
-        )}
       </svg>
       <Bouncy key={title} text={title} className={step >= 1 ? 'hl-pink' : ''} style={{ top: 40, fontSize: 116 }} />
-      {step >= 7 && <Pop className="chip-label" delay={0.5} style={{ left: 0, right: 0, margin: '0 auto', width: 'fit-content', top: 940, background: '#ffd23f', fontSize: 60 }}>¿Y vosotros?</Pop>}
-      {step >= 2 && step < 7 && (
-        <Pop key={count} className="chip-label" style={{ left: 1650, top: 740, background: '#fff', fontSize: 120, padding: '10px 50px' }}>{count}</Pop>
+      {step === 2 && guesses.map((g, i) => (
+        <Pop key={g} delay={0.5 + i * 0.35} className="chip-label"
+          style={{ top: 330 + i * 190, ...(i === 1 ? { right: 70 } : { left: 70 }), background: ['#ffd23f', '#9be7ff', '#ff9fc5'][i], fontSize: 76, padding: '8px 34px', rotate: `${[-6, 5, -3][i]}deg` }}>{g}</Pop>
+      ))}
+      {step >= 3 && (
+        <motion.div className="chip-label" initial={{ scale: 0.3, opacity: 0 }} animate={{ scale: done ? [1, 1.35, 1.1] : 1, opacity: 1 }}
+          transition={done ? { duration: 0.6 } : { type: 'spring', stiffness: 300, damping: 15 }}
+          style={{ left: 1600, top: 470, minWidth: 250, textAlign: 'center', background: done ? '#ffd23f' : '#fff', fontSize: 130, padding: '6px 30px', fontVariantNumeric: 'tabular-nums' }}>
+          {lit}
+        </motion.div>
       )}
+      {done && <Pop className="chip-label" delay={0.6} style={{ left: 0, right: 0, margin: '0 auto', width: 'fit-content', top: 950, background: '#ffd23f', fontSize: 56 }}>¡Y otros 27 en la otra mano!</Pop>}
     </>
   )
 }
@@ -130,7 +133,7 @@ function GuessSlide({ step, setStep, Art, vb, answer, sound, extras = [], color 
       <FlipCard
         flipped={flipped}
         onClick={() => setStep(flipped ? 0 : 1)}
-        front={<FilmArea vb={vb}><Art xray t={t} /></FilmArea>}
+        front={<FilmArea vb={vb}><Art xray t={t} hl={step >= 2} /></FilmArea>}
         back={
           <g>
             <clipPath id="g-back"><rect x={0} y={0} width={BOX.w} height={BOX.h} rx={24} /></clipPath>
@@ -150,6 +153,8 @@ export const Gato = (p) => <GuessSlide {...p} Art={Cat} vb="60 20 820 500" answe
 export const Pez = (p) => <GuessSlide {...p} Art={Fish} vb="80 40 760 440" answer="¡Un pez!" sound={sfx.blup} />
 export const Osito = (p) => <GuessSlide {...p} Art={Teddy} vb="20 60 560 620" answer="¡Un osito!" sound={sfx.squeak}
   extras={[{ title: '¡No tiene huesos!', chip: 'Solo algodón… ¡y un corazón!', sound: sfx.heart }]} />
+export const Murcielago = (p) => <GuessSlide {...p} Art={Bat} vb="-20 50 940 430" answer="¡Un murciélago!" sound={sfx.squeak} color="hl-cyan"
+  extras={[{ title: '¡Sus alas son manos!', chip: 'con dedos larguísimos', sound: sfx.sparkle }]} />
 export const RobotSlide = (p) => <GuessSlide {...p} Art={Robot} vb="40 10 520 740" answer="¡Un robot!" sound={sfx.robot} color="hl-cyan"
   extras={[{ title: '¡Tiene engranajes!', chip: '¡y una pila!', sound: sfx.robot }]} />
 
