@@ -50,15 +50,22 @@ export default function Settings({ onClose, photos }) {
           <label><input type="checkbox" checked={s.notas} onChange={(e) => update({ notas: e.target.checked })} /> Mostrar el guion abajo (notas)</label>
         </div>
 
-        <h3>Cámara (sorpresa del espejo de rayos X)</h3>
-        <div className="row">
-          <button className="btn" onClick={cam.start}>Probar la cámara</button>
-          {cam.status === 'on' && <button className="btn ghost" onClick={cam.stop}>Apagar</button>}
-          <span className="muted">
-            {cam.status === 'on' ? '✅ Cámara lista' : cam.status === 'asking' ? 'Esperando permiso…' : cam.status === 'error' ? `⚠️ ${cam.error}` : 'Apagada'}
-          </span>
-        </div>
-        <p className="muted">Si en el cole no hay cámara o no da permiso, esas diapositivas funcionan igual con dibujos.</p>
+        <h3>Cámara</h3>
+        <label className="switch-row">
+          <input type="checkbox" checked={!!s.camara} onChange={(e) => { update({ camara: e.target.checked }); if (!e.target.checked) cam.stop() }} />
+          <span><b>Usar la cámara del portátil</b><br />
+            <span className="muted">Activa la sorpresa del «espejo de rayos X» (los peques se ven en la pantalla como en una radiografía) y la foto de la clase al acabar el juego de la estatua.
+            Si la dejas apagada, la diapositiva del espejo no aparece y el resto funciona igual.</span></span>
+        </label>
+        {s.camara && (
+          <div className="row" style={{ marginTop: 10 }}>
+            <button className="btn" onClick={cam.start}>Probar la cámara</button>
+            {cam.status === 'on' && <button className="btn ghost" onClick={cam.stop}>Apagar</button>}
+            <span className="muted">
+              {cam.status === 'on' ? '✅ Cámara lista' : cam.status === 'asking' ? 'Esperando permiso…' : cam.status === 'error' ? `⚠️ ${cam.error}` : 'Pruébala antes de empezar'}
+            </span>
+          </div>
+        )}
 
         <h3>Tus radiografías (opcional)</h3>
         <p className="muted">Añade fotos de radiografías reales o divertidas (por ejemplo, las que tengas del trabajo o encuentres en internet).

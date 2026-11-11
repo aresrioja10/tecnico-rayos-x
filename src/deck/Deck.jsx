@@ -33,7 +33,7 @@ export default function Deck() {
     return onGalleryChange(load)
   }, [])
 
-  const slides = useMemo(() => SLIDES.filter((s) => !s.skipIf || !s.skipIf({ photos })), [photos])
+  const slides = useMemo(() => SLIDES.filter((s) => !s.skipIf || !s.skipIf({ photos, settings })), [photos, settings])
   const initial = useRef(readHash())
   const [index, setIndex] = useState(() => Math.min(initial.current.i, SLIDES.length - 1))
   const [step, setStep] = useState(initial.current.s)
@@ -48,6 +48,12 @@ export default function Deck() {
 
   const i = Math.min(index, slides.length - 1)
   const slide = slides[i]
+  const shownId = useRef(slide.id)
+  useEffect(() => {
+    const k = slides.findIndex((s) => s.id === shownId.current)
+    if (k >= 0 && k !== i) setIndex(k)
+  }, [slides]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { shownId.current = slide.id }, [slide.id])
   const steps = typeof slide.steps === 'function' ? slide.steps({ photos }) : slide.steps || 1
 
   useEffect(() => { history.replaceState(null, '', `#${i + 1}${step ? '.' + step : ''}`) }, [i, step])

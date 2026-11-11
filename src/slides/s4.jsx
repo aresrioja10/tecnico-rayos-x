@@ -100,10 +100,11 @@ const DANCERS = [
   { x: 1450, kid: KIDS.sol, ph: 2.6, freeze: { ...POSES.flex, thighA: 30, shinA: -40 } },
 ]
 
-export function Estatua({ step, setStep }) {
+export function Estatua({ step, setStep, settings }) {
   const t = useClock()
   const since = useSince(step, t)
   const cam = useCamera()
+  const camOn = !!settings?.camara && cam.status === 'on'
   const videoRef = useRef(null)
   const [snap, setSnap] = useState(null)
   const [flash, flashEl] = useFlash()
@@ -124,7 +125,7 @@ export function Estatua({ step, setStep }) {
       doneRef.current = true
       sfx.clack(); flash()
       const v = videoRef.current
-      if (cam.status === 'on' && v && v.videoWidth) {
+      if (camOn && v && v.videoWidth) {
         const c = document.createElement('canvas'); c.width = v.videoWidth; c.height = v.videoHeight
         const g = c.getContext('2d'); g.translate(c.width, 0); g.scale(-1, 1); g.drawImage(v, 0, 0)
         try { setSnap(c.toDataURL('image/jpeg', 0.85)) } catch { /* nada */ }
@@ -141,7 +142,7 @@ export function Estatua({ step, setStep }) {
 
   return (
     <>
-      {cam.status === 'on' && <XrayVideo videoRef={videoRef} style={{ inset: 0, opacity: 0.35 }} />}
+      {camOn && <XrayVideo videoRef={videoRef} style={{ inset: 0, opacity: 0.35 }} />}
       <svg className="full" viewBox="0 0 1920 1080">
         {DANCERS.map((d, i) => {
           const pose = step >= 3 ? d.freeze : dance(t, d.ph)

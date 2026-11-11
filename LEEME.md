@@ -28,15 +28,15 @@ Cada clic (o flecha →) avanza **un paso**: dentro de una diapositiva van apare
 En **Ajustes (tecla S)**:
 
 - **Tu nombre**: sale en la portada («¡Hola! Soy …»).
-- **Probar la cámara**: para la sorpresa del «espejo de rayos X» (los peques se ven en la pantalla en modo radiografía) y para la foto de la clase al final del juego de la estatua. Si en el cole no hay cámara o no da permiso, esas diapositivas funcionan igual con dibujos.
+- **Usar la cámara del portátil** (viene apagada): actívala solo si en el cole vais a tener cámara. Añade la sorpresa del «espejo de rayos X» (los peques se ven en la pantalla en modo radiografía) y la foto de la clase al final del juego de la estatua. Con la cámara apagada, la diapositiva del espejo no aparece y el resto funciona igual. Si la activas, pulsa «Probar la cámara» antes de empezar para dar permiso.
 - **Tus radiografías (opcional)**: arrastra fotos de radiografías reales o divertidas (el truco final de Homer o del muñeco de Lego que buscabas en internet, o radiografías del trabajo). Escribe debajo de cada una la respuesta. Aparecen en «Adivina el esqueleto» justo antes del robot. Se guardan en ese ordenador, así que hazlo en el portátil que vayas a usar.
 - **Regalos para imprimir**: el dibujo de Esqueletín para colorear y una hoja con 6 medallas «Súper valiente · Rayos X». También van ya listos en `regalos-para-imprimir.pdf`.
 
 ## Lo que hay en cada parte
 
-1. **¡Mi superpoder!** (≈3 min): portada con un escáner que va enseñando el esqueleto, «¿qué vemos en la mano?», la lupa mágica que enseña los huesos (se mueve con el ratón), la superheroína de los rayos X y la sorpresa del espejo de rayos X con la cámara.
+1. **¡Mi superpoder!** (≈3 min): portada con un escáner que va enseñando el esqueleto, «¿qué vemos en la mano?», la lupa mágica que enseña los huesos (se mueve con el ratón), la superheroína de los rayos X y, si activas la cámara, la sorpresa del espejo de rayos X.
 2. **Fotógrafa de huesos** (≈5 min): la cámara que hace fotos de huesos, la caída en el patio («¡ay!»), y la cámara gigante y mágica: no hace daño, no toca, no pincha… ¡CLACK! y la foto aparece en el ordenador. El botón rojo repite el CLACK.
-3. **¡Adivina el esqueleto!** (≈10 min): la mano (contamos los dedos juntos), perro, gato, pez, osito de peluche («¡no tiene huesos!»), tus radiografías y el truco final: ¡un robot con engranajes!
+3. **¡Adivina el esqueleto!** (≈10 min): la mano y «¿cuántos huesos tiene?» (los peques dicen números y se encienden uno a uno hasta 27), perro, gato, el difícil: un murciélago («¡sus alas son manos con dedos larguísimos!»), tus radiografías y el truco final: ¡un robot con engranajes!
 4. **Juego de la estatua** (≈5 min): si te mueves, la foto sale borrosa; quieto, sale perfecta. Luego el juego: suena música para bailar, «una, dos y… ¡tres!» y todos congelados 5 segundos. Con «¡Otra vez!» se repite.
 5. **El súper traje** (≈5 min): la armadura mágica cae sobre una niña («¡pesa un poco!»), los rayos rebotan y es ¡invencible! Luego la balanza: pesa más que una pluma… ¡pesa como un gato! y «¿quién se lo prueba?».
 6. **¡Un regalo!** (≈5 min): «no hay que tener miedo», la tira de tres viñetas (¡ay! → ¡clack! → ¡curado!), la medalla de superhéroes y la despedida con lluvia de huesos.

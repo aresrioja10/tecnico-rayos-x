@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { setMuted } from './sound.js'
 
 const KEY = 'rayosx-ajustes-v1'
-const DEFAULTS = { nombre: '', sonido: true, notas: false }
+const DEFAULTS = { nombre: '', sonido: true, notas: false, camara: false }
 
 function load() {
   try { return { ...DEFAULTS, ...(JSON.parse(localStorage.getItem(KEY)) || {}) } } catch { return { ...DEFAULTS } }

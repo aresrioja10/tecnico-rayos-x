@@ -372,6 +372,138 @@ export function Teddy({ xray = false, t = 0 }) {
   )
 }
 
+// ======================= MURCIÉLAGO (el difícil: ¡sus alas son manos!) =======================
+// Vista de frente con las alas abiertas. Se dibuja el ala izquierda y se refleja.
+const BAT_W = 900
+const mir = ([x, y]) => [BAT_W - x, y]
+const BAT_L = {
+  sh: [404, 252], el: [322, 222], wr: [214, 160],
+  thumb: [[214, 160], [204, 126]],
+  fingers: [
+    [[214, 160], [150, 120], [112, 100]],
+    [[214, 160], [128, 168], [60, 186], [16, 200]],
+    [[214, 160], [138, 236], [104, 300], [92, 344]],
+    [[214, 160], [180, 262], [188, 330], [200, 380]],
+  ],
+  hip: [424, 380], knee: [398, 420], foot: [390, 452],
+}
+const mirSide = (L) => ({
+  sh: mir(L.sh), el: mir(L.el), wr: mir(L.wr), thumb: L.thumb.map(mir),
+  fingers: L.fingers.map((f) => f.map(mir)), hip: mir(L.hip), knee: mir(L.knee), foot: mir(L.foot),
+})
+const BAT_SIDES = [BAT_L, mirSide(BAT_L)]
+
+// Membrana del ala: borde de ataque recto y festones entre las puntas de los dedos
+function wingPath(S) {
+  const tips = S.fingers.map((f) => f[f.length - 1])
+  const scallop = (a, b, toward, k) => {
+    const m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]
+    return [m[0] + (toward[0] - m[0]) * k, m[1] + (toward[1] - m[1]) * k]
+  }
+  const c1 = scallop(tips[1], tips[2], S.wr, 0.3)
+  const c2 = scallop(tips[2], tips[3], S.wr, 0.3)
+  const ankle = [S.foot[0] + (S.hip[0] < BAT_W / 2 ? 2 : -2), S.foot[1] - 10]
+  const c3 = scallop(tips[3], ankle, [BAT_W / 2, 280], 0.35)
+  const side = [S.hip[0] < BAT_W / 2 ? 418 : BAT_W - 418, 300]
+  const P = (p) => `${p[0]} ${p[1]}`
+  return `M ${P(S.sh)} L ${P(S.el)} L ${P(S.wr)} L ${P(tips[0])} L ${P(tips[1])} Q ${P(c1)} ${P(tips[2])} Q ${P(c2)} ${P(tips[3])} Q ${P(c3)} ${P(ankle)} L ${P(S.hip)} L ${P(side)} Z`
+}
+
+function BatSkin({ xray }) {
+  const c = xray
+    ? { body: SOFT, wing: SOFT, ear: SOFT, belly: SOFT, line: SOFT_LINE, ow: 3 }
+    : { body: '#9b7fe0', wing: '#7559c4', ear: '#9b7fe0', belly: '#e2d6ff', line: '#2e2257', ow: 6 }
+  return (
+    <g>
+      <g opacity={xray ? SOFT_OP : 1}>
+        <Outlined ow={c.ow} color={c.line}>
+          {BAT_SIDES.map((S, i) => <Path key={'w' + i} fill={c.wing} d={wingPath(S)} />)}
+          {BAT_SIDES.map((S, i) => <Line key={'t' + i} x1={S.wr[0]} y1={S.wr[1]} x2={S.thumb[1][0]} y2={S.thumb[1][1]} w={14} fill={c.wing} />)}
+        </Outlined>
+        <Outlined ow={c.ow} color={c.line}>
+          {BAT_SIDES.map((S, i) => <Line key={'l' + i} x1={S.hip[0]} y1={S.hip[1]} x2={S.foot[0]} y2={S.foot[1]} w={20} fill={c.body} />)}
+          <Path fill={c.ear} d="M 412 176 L 382 80 Q 426 98 448 150 Z" />
+          <Path fill={c.ear} d="M 488 176 L 518 80 Q 474 98 452 150 Z" />
+          <Ellipse cx={450} cy={302} rx={60} ry={90} fill={c.body} />
+          <Circle cx={450} cy={198} r={64} fill={c.body} />
+        </Outlined>
+      </g>
+      {!xray && (
+        <g>
+          {BAT_SIDES.map((S, i) => (
+            <g key={'d' + i} stroke="#4a3590" strokeWidth={6} fill="none" strokeLinecap="round" strokeLinejoin="round">
+              {S.fingers.map((f, k) => <polyline key={k} points={f.map((p) => p.join(',')).join(' ')} />)}
+              <polyline points={[S.sh, S.el, S.wr].map((p) => p.join(',')).join(' ')} />
+              <path d={`M ${S.thumb[1][0]} ${S.thumb[1][1]} q ${i ? 8 : -8} -10 ${i ? 2 : -2} -18`} stroke="#2e2257" strokeWidth={5} />
+            </g>
+          ))}
+          <path d="M 397 98 L 414 152 L 430 146 Z M 503 98 L 486 152 L 470 146 Z" fill="#ff9fc5" />
+          <ellipse cx={450} cy={318} rx={36} ry={58} fill={c.belly} />
+          {[0, 1, 2].map((k) => <path key={k} d={`M ${432 + k * 4} ${292 + k * 22} q ${18 - k * 4} 8 ${36 - k * 8} 0`} stroke="#b9a6ee" strokeWidth={4} fill="none" strokeLinecap="round" />)}
+          <circle cx={426} cy={190} r={17} fill="#fff" stroke="#2e2257" strokeWidth={4} />
+          <circle cx={474} cy={190} r={17} fill="#fff" stroke="#2e2257" strokeWidth={4} />
+          <circle cx={429} cy={193} r={9} fill="#1b1430" /><circle cx={477} cy={193} r={9} fill="#1b1430" />
+          <circle cx={432} cy={189} r={3.5} fill="#fff" /><circle cx={480} cy={189} r={3.5} fill="#fff" />
+          <ellipse cx={408} cy={218} rx={12} ry={7} fill="#ff8fb8" opacity={0.7} />
+          <ellipse cx={492} cy={218} rx={12} ry={7} fill="#ff8fb8" opacity={0.7} />
+          <path d="M 444 210 L 456 210 L 450 217 Z" fill="#2e2257" />
+          <path d="M 432 226 Q 450 242 468 226" stroke="#2e2257" strokeWidth={4.5} fill="#fff" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M 438 229 l 4 8 l 4 -6 M 454 231 l 4 6 l 4 -8" fill="#fff" stroke="#2e2257" strokeWidth={2.5} strokeLinejoin="round" />
+          {BAT_SIDES.map((S, i) => <path key={'f' + i} d={`M ${S.foot[0] - 10} ${S.foot[1]} l 4 10 M ${S.foot[0]} ${S.foot[1] + 2} l 0 11 M ${S.foot[0] + 10} ${S.foot[1]} l -4 10`} stroke="#2e2257" strokeWidth={4} strokeLinecap="round" />)}
+        </g>
+      )}
+    </g>
+  )
+}
+
+function BatBones({ hl }) {
+  const HAND = hl ? '#ffd23f' : BONE
+  const marrow = hl ? 'rgba(201,138,0,0.55)' : undefined
+  const sp = Array.from({ length: 10 }, (_, i) => [450, 244 + i * 15.5])
+  return (
+    <g filter="url(#glow)">
+      <Outlined ow={0}>
+        {[0, 1, 2, 3, 4, 5].map((k) => {
+          const y = 262 + k * 15, wd = 34 - Math.abs(k - 2) * 3
+          return (
+            <g key={'r' + k}>
+              <Stroke w={5} fill={BONE} d={`M 446 ${y} C ${446 - wd * 0.7} ${y + 2}, ${446 - wd} ${y + 14}, ${446 - wd * 0.85} ${y + 26}`} />
+              <Stroke w={5} fill={BONE} d={`M 454 ${y} C ${454 + wd * 0.7} ${y + 2}, ${454 + wd} ${y + 14}, ${454 + wd * 0.85} ${y + 26}`} />
+            </g>
+          )
+        })}
+        <Vertebrae pts={sp} r={[8, 6]} />
+        <Path fill={BONE} d="M 424 382 Q 450 370 476 382 L 470 404 Q 450 414 430 404 Z" />
+        {BAT_SIDES.map((S, i) => (
+          <g key={'b' + i}>
+            <Line x1={450} y1={250} x2={S.sh[0]} y2={S.sh[1]} w={7} fill={BONE} />
+            <RealBone a={S.sh} b={S.el} w={14} gap={3} fill={BONE} />
+            <RealBone a={S.el} b={S.wr} w={10} gap={3} fill={BONE} />
+            <RealBone a={S.hip} b={S.knee} w={8} gap={2} fill={BONE} />
+            <RealBone a={S.knee} b={S.foot} w={7} gap={2} fill={BONE} />
+          </g>
+        ))}
+        {BAT_SIDES.map((S, i) => (
+          <g key={'h' + i}>
+            <Ellipse cx={S.wr[0]} cy={S.wr[1]} rx={10} ry={9} fill={HAND} />
+            <RealBone a={S.thumb[0]} b={S.thumb[1]} w={6} gap={6} fill={HAND} marrow={marrow} />
+            {S.fingers.map((f) => f.slice(1).map((p, k) => <RealBone key={k + '-' + p[0]} a={f[k]} b={p} w={[7, 5, 4][k]} gap={k === 0 ? 7 : 3} fill={HAND} marrow={marrow} headScale={1.4} />))}
+          </g>
+        ))}
+        <Ellipse cx={450} cy={194} rx={42} ry={38} fill={BONE} />
+        <Path fill={BONE} d="M 422 206 Q 450 200 478 206 L 466 236 Q 450 244 434 236 Z" />
+      </Outlined>
+      <ellipse cx={431} cy={190} rx={12} ry={13} fill="#0a1630" />
+      <ellipse cx={469} cy={190} rx={12} ry={13} fill="#0a1630" />
+      <path d="M 438 230 l 4 7 l 4 -7 M 454 230 l 4 7 l 4 -7" stroke="#0a1630" strokeWidth={2.5} fill="none" />
+    </g>
+  )
+}
+
+export function Bat({ xray = false, hl = false }) {
+  return <g><BatSkin xray={xray} />{xray && <BatBones hl={hl} />}</g>
+}
+
 // ======================= ROBOT (el truco final) =======================
 export function Robot({ xray = false, t = 0 }) {
   const c = xray

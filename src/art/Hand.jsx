@@ -77,6 +77,31 @@ export function HandBones({ fill = '#eaf6ff', filter = 'url(#glow)', crack = fal
   )
 }
 
+// Los 27 huesos de la mano, en el orden en que se encienden al contarlos:
+// 8 de la muñeca, 5 de la palma y 14 de los dedos (el pulgar tiene uno menos).
+export const HAND_BONES = (() => {
+  const list = CARPALS.map(([cx, cy, rx, ry]) => ({ carpal: true, cx, cy, rx, ry }))
+  for (let lvl = 0; lvl < 4; lvl++) {
+    FINGERS.forEach((f) => {
+      if (lvl + 1 < f.pts.length) list.push({ a: f.pts[lvl], b: f.pts[lvl + 1], w: f.bw[lvl], gap: lvl === 0 ? 10 : 7 })
+    })
+  }
+  return list
+})()
+
+// Los primeros n huesos, encendidos en otro color
+export function HandBonesLit({ n, fill = '#ffd23f' }) {
+  return (
+    <g filter="url(#glow)">
+      <Outlined ow={0}>
+        {HAND_BONES.slice(0, n).map((b, i) => b.carpal
+          ? <Ellipse key={i} cx={b.cx} cy={b.cy} rx={b.rx + 1} ry={b.ry + 1} fill={fill} />
+          : <RealBone key={i} a={b.a} b={b.b} w={b.w + 1} fill={fill} gap={b.gap} marrow="rgba(201,138,0,0.55)" />)}
+      </Outlined>
+    </g>
+  )
+}
+
 // Mano en versión radiografía completa (tejido blando + huesos)
 export function HandXray({ crack }) {
   return (
