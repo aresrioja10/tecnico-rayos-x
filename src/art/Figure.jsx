@@ -248,7 +248,7 @@ export function Vest({ drop = 0, color = '#6c5ce7', trim = '#3d2f99' }) {
   )
 }
 
-export function Kid({ pose, kid = KIDS.leo, expression = 'smile', xray = false, vest = null, highlightArm = 0, skeletonFilter = 'url(#glow)', cape = false, capeT = 0, emblem = false, cast = false }) {
+export function Kid({ pose, kid = KIDS.leo, expression = 'smile', xray = false, vest = null, highlightArm = 0, skeletonFilter = 'url(#glow)', cape = false, capeT = 0, emblem = false, cast = false, organs = null }) {
   const j = joints(pose)
   const c = xray ? { ...kid, ...XR } : kid
   const oc = xray ? '#d4ebff' : '#4a2e22'
@@ -302,6 +302,8 @@ export function Kid({ pose, kid = KIDS.leo, expression = 'smile', xray = false, 
         </g>
       )}
       {xray && <Skeleton pose={pose} filter={skeletonFilter} colors={{ bone: '#eef8ff', outline: 'rgba(170,215,255,0.55)', ow: 1.5, socket: '#0a1630', eyes: false }} />}
+      {/* órganos encima de los huesos (semitransparentes) para que se vean bien */}
+      {xray && organs && <g transform={tr(j.P, j.T)}>{organs}</g>}
       {vest !== null && (
         <g transform={tr(j.P, j.T)} opacity={xray ? 0.9 : 1}>
           <Vest drop={vest} />

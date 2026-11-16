@@ -1,33 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import { useSettings } from '../lib/settings.jsx'
 import { useCamera } from '../lib/camera.jsx'
-import { addPhoto, removePhoto, renamePhoto, emitGalleryChange } from '../lib/gallery.js'
 
-function Thumb({ p }) {
-  const [url, setUrl] = useState('')
-  const [name, setName] = useState(p.name)
-  useEffect(() => { const u = URL.createObjectURL(p.blob); setUrl(u); return () => URL.revokeObjectURL(u) }, [p.blob])
-  return (
-    <div className="thumb">
-      <img src={url} alt={p.name} />
-      <input type="text" value={name} onChange={(e) => setName(e.target.value)} onBlur={() => renamePhoto(p.id, name).then(emitGalleryChange)} placeholder="¿Qué es? (respuesta)" />
-      <div className="row" style={{ marginTop: 6 }}>
-        <button className="btn red" onClick={() => removePhoto(p.id).then(emitGalleryChange)}>Quitar</button>
-      </div>
-    </div>
-  )
-}
-
-export default function Settings({ onClose, photos }) {
+export default function Settings({ onClose }) {
   const [s, update] = useSettings()
   const cam = useCamera()
-  const [over, setOver] = useState(false)
-  const fileRef = useRef(null)
-
-  const addFiles = async (files) => {
-    for (const f of files) if (f.type.startsWith('image/')) await addPhoto(f)
-    emitGalleryChange()
-  }
 
   return (
     <div className="panel-wrap" onClick={onClose}>
@@ -40,7 +17,7 @@ export default function Settings({ onClose, photos }) {
 
         <h3>Tu nombre</h3>
         <label>
-          Aparece en la portada: «¡Hola! Soy …»
+          Aparece en la primera diapositiva: «¡Hola! Soy …»
           <input type="text" value={s.nombre} placeholder="Por ejemplo: Laura, o la mamá de Hugo" onChange={(e) => update({ nombre: e.target.value })} />
         </label>
 
@@ -54,8 +31,8 @@ export default function Settings({ onClose, photos }) {
         <label className="switch-row">
           <input type="checkbox" checked={!!s.camara} onChange={(e) => { update({ camara: e.target.checked }); if (!e.target.checked) cam.stop() }} />
           <span><b>Usar la cámara del portátil</b><br />
-            <span className="muted">Activa la sorpresa del «espejo de rayos X» (los peques se ven en la pantalla como en una radiografía) y la foto de la clase al acabar el juego de la estatua.
-            Si la dejas apagada, la diapositiva del espejo no aparece y el resto funciona igual.</span></span>
+            <span className="muted">Al acabar el juego de la estatua sale una foto de la clase en rayos X.
+            Si la dejas apagada, el juego funciona igual, solo que sin foto.</span></span>
         </label>
         {s.camara && (
           <div className="row" style={{ marginTop: 10 }}>
@@ -66,19 +43,6 @@ export default function Settings({ onClose, photos }) {
             </span>
           </div>
         )}
-
-        <h3>Tus radiografías (opcional)</h3>
-        <p className="muted">Añade fotos de radiografías reales o divertidas (por ejemplo, las que tengas del trabajo o encuentres en internet).
-          Aparecerán en la parte de «Adivina el esqueleto» justo antes del final. Escribe debajo de cada una la respuesta (se muestra al pulsar).</p>
-        <div className={`drop ${over ? 'over' : ''}`}
-          onClick={() => fileRef.current?.click()}
-          onDragOver={(e) => { e.preventDefault(); setOver(true) }}
-          onDragLeave={() => setOver(false)}
-          onDrop={(e) => { e.preventDefault(); setOver(false); addFiles([...e.dataTransfer.files]) }}>
-          Arrastra aquí las imágenes o haz clic para elegirlas
-          <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => addFiles([...e.target.files])} />
-        </div>
-        {photos.length > 0 && <div className="thumbs">{photos.map((p) => <Thumb key={p.id} p={p} />)}</div>}
 
         <h3>Regalos para imprimir</h3>
         <div className="row">
