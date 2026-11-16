@@ -165,7 +165,7 @@ export default function Deck() {
         </AnimatePresence>
 
         <div className="chrome">
-          {slide.id !== 'portada' && (
+          {slide.id !== 'quees' && (
             <div className="section-chip">
               <span className="num" style={{ background: sec.color }}>{slide.section}</span>
               <span>{sec.name}</span>
@@ -232,7 +232,7 @@ export default function Deck() {
         )}
         {blackout && <div className="blackout" onClick={() => setBlackout(false)} />}
       </Stage>
-      {panel && <Settings onClose={() => setPanel(false)} photos={photos} />}
+      {panel && <Settings onClose={() => setPanel(false)} />}
     </div>
   )
 }

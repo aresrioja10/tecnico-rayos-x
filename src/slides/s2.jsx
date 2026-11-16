@@ -180,7 +180,7 @@ const BADGES = [
   { text: '¡No pincha!', icon: 'jeringa', color: '#ff8fa3' },
 ]
 
-function BadgeIcon({ kind }) {
+export function BadgeIcon({ kind }) {
   return (
     <g>
       <circle cx={0} cy={0} r={70} fill="#fff" />
