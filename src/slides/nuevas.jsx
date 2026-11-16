@@ -85,7 +85,7 @@ export function QueEs({ step }) {
       </svg>
       <AnimatePresence mode="wait">
         {step === 0
-          ? <Bouncy key="a" text="¿Qué es una técnica de rayos?" style={{ top: 34, fontSize: 104 }} />
+          ? <Bouncy key="a" text="¿Qué es un técnico de rayos?" style={{ top: 34, fontSize: 104 }} />
           : <Bouncy key="b" text="¡Una fotógrafa de huesos!" className="hl-cyan" style={{ top: 34, fontSize: 112 }} />}
       </AnimatePresence>
       {step === 0 && (

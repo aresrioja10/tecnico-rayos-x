@@ -1,6 +1,6 @@
 # ¡Visión de Rayos X! · Presentación para la clase de 5 años
 
-Presentación interactiva para explicar el trabajo de técnica de rayos X a peques de 5 años (20–30 min), siguiendo el guion en 6 partes (12 diapositivas).
+Presentación interactiva para explicar el trabajo de técnico de rayos X a peques de 5 años (20–30 min), siguiendo el guion en 6 partes (12 diapositivas).
 
 ## Cómo abrirla
 
@@ -34,7 +34,7 @@ Para el día: las **placas de verdad** (para «¿Qué ves en esta radiografía?�
 
 ## Lo que hay en cada parte
 
-1. **¿Qué es una técnica de rayos?** (≈6 min): «¡Hola! Soy Bea», la pregunta y, al hacer clic, la cámara hace ¡CLACK! y se ve al niño por dentro: «¡una fotógrafa de huesos!». Después, la lupa mágica (se mueve con el ratón o se pasea sola) enseña por dentro una mano (los huesos), el pecho (los pulmones que se hinchan y el corazón que late) y «¿y aquí?»: la tripa.
+1. **¿Qué es un técnico de rayos?** (≈6 min): «¡Hola! Soy Bea», la pregunta y, al hacer clic, la cámara hace ¡CLACK! y se ve al niño por dentro: «¡una fotógrafa de huesos!». Después, la lupa mágica (se mueve con el ratón o se pasea sola) enseña por dentro una mano (los huesos), el pecho (los pulmones que se hinchan y el corazón que late) y «¿y aquí?»: la tripa.
 2. **La cámara gigante** (≈4 min): la caída en el patio («¡ay!», ¿cómo está el hueso?) y la cámara gigante, sin textos: una placa de la mano. La placa va a la mesa, el niño, sentado, apoya la mano encima, ¡CLACK!, y la radiografía de la mano aparece en la pantalla de luz. Para repetirlo, toca la máquina o el botón 📸.
 3. **El chaleco protector** (≈3 min): «esta máquina tiene una luz invisible muy potente», el chaleco cae sobre la niña («¡pesa un poco!») y la luz que rebota se queda en el chaleco: solo sale en la foto la mano. Al final, «¿Quién se lo quiere probar?» con las manos de la clase levantadas.
 4. **Quietos como estatuas** (≈5 min): no duele, es muy rápido (¡CLACK! y ya está) y solo hay que quedarse quieto como una estatua. Luego el juego: suena música para bailar, «una, dos y… ¡tres!» y todos congelados 5 segundos. Con «¡Otra vez!» se repite.
