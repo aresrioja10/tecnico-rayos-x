@@ -8,9 +8,9 @@ import { QueEs, LupaPulmones, LupaTripa, CamaraGigante, LuzChaleco, NoDuele, Que
 // Las diapositivas antiguas que ya no salen (portada, superpoder, espejo, adivinanzas de
 // animales, medalla…) siguen en s1…s6.jsx por si se quieren recuperar.
 export const SLIDES = [
-  // 1. ¿QUÉ ES UNA TÉCNICA DE RAYOS? (≈6 min)
-  { id: 'quees', section: 1, title: '¿Qué es una técnica de rayos?', C: QueEs, steps: 2,
-    notes: '«¡Hola! Soy Bea y trabajo en el hospital. ¿Sabéis qué es una técnica de rayos?» (dejar que contesten)\n(clic) ¡CLACK! «¡Soy una fotógrafa de huesos! Hago fotos de lo que hay DENTRO de vosotros.»' },
+  // 1. ¿QUÉ ES UN TÉCNICO DE RAYOS? (≈6 min)
+  { id: 'quees', section: 1, title: '¿Qué es un técnico de rayos?', C: QueEs, steps: 2,
+    notes: '«¡Hola! Soy Bea y trabajo en el hospital. ¿Sabéis qué es un técnico de rayos?» (dejar que contesten)\n(clic) ¡CLACK! «¡Soy una fotógrafa de huesos! Hago fotos de lo que hay DENTRO de vosotros.»' },
   { id: 'lupa', section: 1, title: 'La lupa mágica: la mano', C: Lupa, steps: 2,
     notes: '«¡Mirad mi lupa mágica! ¿Qué veremos dentro de la mano?» Mueve el ratón por la mano y la lupa enseña los huesos (si no lo mueves, se pasea sola).\n(clic) «¡Huesos! La mano está llena de huesos pequeñitos.»' },
   { id: 'pulmones', section: 1, title: 'La lupa mágica: los pulmones', C: LupaPulmones, steps: 2,
@@ -26,7 +26,7 @@ export const SLIDES = [
 
   // 3. LUZ INVISIBLE Y CHALECO (≈3 min)
   { id: 'luz', section: 3, title: 'Luz invisible y chaleco protector', C: LuzChaleco, steps: 4,
-    notes: '«Esta máquina de fotos tiene una luz invisible muy potente…»\n(clic) «…y la técnica os puede poner un chaleco…»\n(clic) «…para proteger las partes del cuerpo que no necesitan foto. Aquí solo hacemos foto de la mano.»\n(clic) «¿Quién se lo quiere probar?» Un voluntario (o la profe) se pone el chaleco de verdad.\n· Ten a mano el chaleco de plomo para enseñarlo.' },
+    notes: '«Esta máquina de fotos tiene una luz invisible muy potente…»\n(clic) «…y el técnico os puede poner un chaleco…»\n(clic) «…para proteger las partes del cuerpo que no necesitan foto. Aquí solo hacemos foto de la mano.»\n(clic) «¿Quién se lo quiere probar?» Un voluntario (o la profe) se pone el chaleco de verdad.\n· Ten a mano el chaleco de plomo para enseñarlo.' },
 
   // 4. QUIETOS COMO ESTATUAS (≈5 min)
   { id: 'noduele', section: 4, title: 'No duele y es muy rápido', C: NoDuele, steps: 3,
