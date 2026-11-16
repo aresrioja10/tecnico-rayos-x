@@ -15,12 +15,6 @@ export default function Settings({ onClose }) {
         </div>
         <p className="muted">Todo lo que cambies aquí se guarda en este ordenador.</p>
 
-        <h3>Tu nombre</h3>
-        <label>
-          Aparece en la primera diapositiva: «¡Hola! Soy …»
-          <input type="text" value={s.nombre} placeholder="Por ejemplo: Laura, o la mamá de Hugo" onChange={(e) => update({ nombre: e.target.value })} />
-        </label>
-
         <h3>Sonido y notas</h3>
         <div className="row">
           <label><input type="checkbox" checked={s.sonido} onChange={(e) => update({ sonido: e.target.checked })} /> Sonidos activados</label>

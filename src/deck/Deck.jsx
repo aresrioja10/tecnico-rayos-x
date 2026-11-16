@@ -41,7 +41,6 @@ export default function Deck() {
   const [overview, setOverview] = useState(false)
   const [blackout, setBlackout] = useState(false)
   const [panel, setPanel] = useState(false)
-  const [banner, setBanner] = useState(null)
   const [idle, setIdle] = useState(false)
   const startTime = useRef(Date.now())
   const [, force] = useState(0)
@@ -62,9 +61,6 @@ export default function Deck() {
     const target = Math.max(0, Math.min(slides.length - 1, n))
     if (target === i) { setStep(s); return }
     setDir(target > i ? 1 : -1)
-    if (target > i && slides[target].section !== slides[i].section) {
-      setBanner(slides[target].section)
-    } else setBanner(null)
     setIndex(target); setStep(s)
   }, [i, slides])
 
@@ -82,11 +78,6 @@ export default function Deck() {
     }
   }, [step, i, slides, goto, photos])
 
-  useEffect(() => {
-    if (banner == null) return
-    const id = setTimeout(() => setBanner(null), 2200)
-    return () => clearTimeout(id)
-  }, [banner, index])
 
   useEffect(() => {
     const onKey = (e) => {
@@ -189,20 +180,6 @@ export default function Deck() {
             <button className="ctl" title="Siguiente (→)" onClick={next}>{Icon.next}</button>
           </div>
         </div>
-
-        <AnimatePresence>
-          {banner != null && (
-            <motion.div className="section-banner" key={'b' + banner}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <motion.div className="card" style={{ background: SECTIONS[banner].color }}
-                initial={{ scale: 0.3, rotate: -8, y: 200 }} animate={{ scale: 1, rotate: 0, y: 0 }} exit={{ scale: 1.3, opacity: 0 }}
-                transition={{ type: 'spring', stiffness: 260, damping: 14 }}>
-                <div className="i">{SECTIONS[banner].icon}</div>
-                <div className="t">{SECTIONS[banner].name}</div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {settings.notas && !overview && (
           <div className="notes">

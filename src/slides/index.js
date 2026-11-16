@@ -1,7 +1,6 @@
 import { Lupa } from './s1.jsx'
 import { Patio } from './s2.jsx'
 import { Estatua } from './s4.jsx'
-import { Balanza } from './s5.jsx'
 import { QueEs, LupaPulmones, LupaTripa, CamaraGigante, LuzChaleco, NoDuele, QueVes, Puzzle, Bastoncillos } from './nuevas.jsx'
 
 // Cada diapositiva: sección, nº de pasos (cada clic avanza un paso) y notas con el guion.
@@ -9,27 +8,25 @@ import { QueEs, LupaPulmones, LupaTripa, CamaraGigante, LuzChaleco, NoDuele, Que
 // Las diapositivas antiguas que ya no salen (portada, superpoder, espejo, adivinanzas de
 // animales, medalla…) siguen en s1…s6.jsx por si se quieren recuperar.
 export const SLIDES = [
-  // 1. ¿QUÉ ES UN TÉCNICO DE RAYOS? (≈6 min)
-  { id: 'quees', section: 1, title: '¿Qué es un técnico de rayos?', C: QueEs, steps: 2,
-    notes: '«¡Hola! Soy … y trabajo en el hospital. ¿Sabéis qué es un técnico de rayos?» (dejar que contesten)\n(clic) ¡CLACK! «¡Es un fotógrafo del interior del cuerpo! Hago fotos de lo que hay DENTRO de vosotros.»\n· Tu nombre se pone en Ajustes (tecla S) y sale en esta diapositiva.' },
+  // 1. ¿QUÉ ES UNA TÉCNICA DE RAYOS? (≈6 min)
+  { id: 'quees', section: 1, title: '¿Qué es una técnica de rayos?', C: QueEs, steps: 2,
+    notes: '«¡Hola! Soy Bea y trabajo en el hospital. ¿Sabéis qué es una técnica de rayos?» (dejar que contesten)\n(clic) ¡CLACK! «¡Soy una fotógrafa de huesos! Hago fotos de lo que hay DENTRO de vosotros.»' },
   { id: 'lupa', section: 1, title: 'La lupa mágica: la mano', C: Lupa, steps: 2,
     notes: '«¡Mirad mi lupa mágica! ¿Qué veremos dentro de la mano?» Mueve el ratón por la mano y la lupa enseña los huesos (si no lo mueves, se pasea sola).\n(clic) «¡Huesos! La mano está llena de huesos pequeñitos.»' },
   { id: 'pulmones', section: 1, title: 'La lupa mágica: los pulmones', C: LupaPulmones, steps: 2,
     notes: '«¿Y si miramos en el pecho?» (la lupa se pasea; también la puedes mover con el ratón)\n(clic) «¡Los pulmones! Se hinchan como globos cuando respiramos. ¡Y ahí está el corazón latiendo!»\n· Que respiren hondo todos a la vez.' },
   { id: 'tripa', section: 1, title: 'La lupa mágica: la tripa', C: LupaTripa, steps: 2,
-    notes: '«¿Y en la tripa? ¿Qué habrá?»\n(clic) «¡La tripa! Por aquí pasa la comida: primero el estómago y luego un tubo larguííísimo.»' },
+    notes: '«¿Y aquí? ¿Qué habrá?»\n(clic) «¡La tripa!»' },
 
   // 2. LA CÁMARA GIGANTE (≈4 min)
   { id: 'patio', section: 2, title: 'En el patio: ¡ay, mi brazo!', C: Patio, steps: 3,
     notes: '«Cuando nos caemos jugando en el patio…»\n(clic) «…y nos duele un brazo…»\n(clic) «…el médico necesita saber cómo está el hueso por dentro. ¡Y entonces vienen a verme a mí!»' },
   { id: 'camara', section: 2, title: 'La cámara gigante', C: CamaraGigante, steps: 2,
-    notes: '«Para eso uso una cámara de fotos gigante. El niño se tumba en la camilla y debajo ponemos una placa.»\n(clic) «¡CLACK!» La placa sale y la foto se ve en la pantalla de luz.\n· Para repetir la foto, toca la máquina o el botón 📸.' },
+    notes: '«Para eso uso una cámara de fotos gigante.» Ponemos la placa en la mesa, el niño se sienta y apoya el brazo encima.\n(clic) «¡CLACK!» La placa va a la pantalla de luz: ¡la foto de los huesos del brazo y la mano!\n· Para repetir la foto, toca la máquina o el botón 📸.' },
 
-  // 3. LUZ INVISIBLE Y CHALECO (≈4 min)
+  // 3. LUZ INVISIBLE Y CHALECO (≈3 min)
   { id: 'luz', section: 3, title: 'Luz invisible y chaleco protector', C: LuzChaleco, steps: 3,
-    notes: '«Esta máquina de fotos tiene una luz invisible muy potente…»\n(clic) «…y el técnico os puede poner un chaleco…»\n(clic) «…para proteger las partes del cuerpo que no necesitan foto. Aquí solo hacemos foto de la mano.»\n· Enseña el chaleco de plomo de verdad.' },
-  { id: 'balanza', section: 3, title: '¡El chaleco pesa como un gato!', C: Balanza, steps: 4,
-    notes: '«¿Cuánto pesará el chaleco?» (clic) «¿Más que una pluma?» (clic) «¡Pesa como un gato!»\n(clic) «¿Quién se lo quiere probar?» Un voluntario (o la profe) se pone el chaleco.' },
+    notes: '«Esta máquina de fotos tiene una luz invisible muy potente…»\n(clic) «…y la técnica os puede poner un chaleco…»\n(clic) «…para proteger las partes del cuerpo que no necesitan foto. Aquí solo hacemos foto de la mano.»\n· Enseña el chaleco de plomo de verdad y, si quieres, que un voluntario se lo pruebe.' },
 
   // 4. QUIETOS COMO ESTATUAS (≈5 min)
   { id: 'noduele', section: 4, title: 'No duele y es muy rápido', C: NoDuele, steps: 3,
