@@ -40,7 +40,7 @@ Para el día: las **placas de verdad** (para «¿Qué ves en esta radiografía?�
 3. **El chaleco protector** (≈4 min): «esta máquina tiene una luz invisible muy potente», el chaleco cae sobre la niña («¡pesa un poco!») y la luz que rebota se queda en el chaleco: solo sale en la foto la mano. Luego la balanza (¡pesa como un gato!) y «¿quién se lo prueba?».
 4. **Quietos como estatuas** (≈5 min): no duele, es muy rápido (¡CLACK! y ya está) y solo hay que quedarse quieto como una estatua. Luego el juego: suena música para bailar, «una, dos y… ¡tres!» y todos congelados 5 segundos. Con «¡Otra vez!» se repite.
 5. **¿Qué ves en esta radiografía?** (≈5 min): una pantalla de luz con interrogantes mientras enseñas las placas de verdad. Con un clic la pantalla se pone blanca, como un negatoscopio, para ponerlas delante; tocándola vuelve.
-6. **¡A jugar!** (≈6 min): el puzzle de radiografías (cabeza, pecho, manos, tripa y piernas que se colocan solas al hacer clic) y «haz tu radiografía de la mano»: los materiales, dibujar la mano, pegar los bastoncillos como huesos y… ¡radiografía terminada!
+6. **¡A jugar!** (≈6 min): el puzzle de radiografías (en pantalla salen las piezas sueltas: cabeza, pecho, manos, tripa y piernas; lo montan los peques en la mesa) y «haz tu radiografía de la mano»: los materiales, dibujar la mano, pegar los bastoncillos como huesos y… ¡radiografía terminada!
 
 ## Para quien quiera tocar el código
 
