@@ -22,11 +22,11 @@ export const SLIDES = [
   { id: 'patio', section: 2, title: 'En el patio: ¡ay, mi brazo!', C: Patio, steps: 3,
     notes: '«Cuando nos caemos jugando en el patio…»\n(clic) «…y nos duele un brazo…»\n(clic) «…el médico necesita saber cómo está el hueso por dentro. ¡Y entonces vienen a verme a mí!»' },
   { id: 'camara', section: 2, title: 'La cámara gigante', C: CamaraGigante, steps: 2,
-    notes: '«Para eso uso una cámara de fotos gigante.» Ponemos la placa en la mesa, el niño se sienta y apoya el brazo encima.\n(clic) «¡CLACK!» La placa va a la pantalla de luz: ¡la foto de los huesos del brazo y la mano!\n· Para repetir la foto, toca la máquina o el botón 📸.' },
+    notes: '«Para eso uso una cámara de fotos gigante.» Ponemos la placa en la mesa, el niño se sienta y apoya la mano encima.\n(clic) «¡CLACK!» La placa va a la pantalla de luz: ¡la foto de los huesos de la mano!\n· Para repetir la foto, toca la máquina o el botón 📸.' },
 
   // 3. LUZ INVISIBLE Y CHALECO (≈3 min)
-  { id: 'luz', section: 3, title: 'Luz invisible y chaleco protector', C: LuzChaleco, steps: 3,
-    notes: '«Esta máquina de fotos tiene una luz invisible muy potente…»\n(clic) «…y la técnica os puede poner un chaleco…»\n(clic) «…para proteger las partes del cuerpo que no necesitan foto. Aquí solo hacemos foto de la mano.»\n· Enseña el chaleco de plomo de verdad y, si quieres, que un voluntario se lo pruebe.' },
+  { id: 'luz', section: 3, title: 'Luz invisible y chaleco protector', C: LuzChaleco, steps: 4,
+    notes: '«Esta máquina de fotos tiene una luz invisible muy potente…»\n(clic) «…y la técnica os puede poner un chaleco…»\n(clic) «…para proteger las partes del cuerpo que no necesitan foto. Aquí solo hacemos foto de la mano.»\n(clic) «¿Quién se lo quiere probar?» Un voluntario (o la profe) se pone el chaleco de verdad.\n· Ten a mano el chaleco de plomo para enseñarlo.' },
 
   // 4. QUIETOS COMO ESTATUAS (≈5 min)
   { id: 'noduele', section: 4, title: 'No duele y es muy rápido', C: NoDuele, steps: 3,

@@ -6,6 +6,7 @@ import { HandSkin, HandXray, FINGERS } from '../art/Hand.jsx'
 import { XrayMachine, Table, CuteCamera, Lightbox } from '../art/Machine.jsx'
 import { Bouncy, Pop, Sparkles, Sunburst, Star, useOnStep, useOnMount, useFlash, svgPoint } from './ui.jsx'
 import { BadgeIcon } from './s2.jsx'
+import { RaisedArm } from './s5.jsx'
 import { sfx } from '../lib/sound.js'
 import { burst, party } from '../lib/confetti.js'
 
@@ -197,8 +198,8 @@ export const LupaTripa = (p) => (
 )
 
 // =====================================================================
-// 4. LA CÁMARA GIGANTE (sin textos): placa del brazo. El niño está sentado,
-//    apoya el brazo sobre la placa, ¡clack!, y la radiografía va al negatoscopio.
+// 4. LA CÁMARA GIGANTE (sin textos): placa de la mano. El niño está sentado,
+//    apoya la mano sobre la placa, ¡clack!, y la radiografía de la mano va al negatoscopio.
 // =====================================================================
 const CG = { tx: 300, ty: 662, tsx: 0.85, tsy: 1.4, kx: 954, ky: 848, ks: 1, ms: 0.9, lb: [1300, 190, 540, 700] }
 CG.top = CG.ty + 20 * CG.tsy // superficie de la mesa
@@ -208,7 +209,7 @@ CG.my = CG.top - 720 * CG.ms
 const LB_C = [CG.lb[0] + CG.lb[2] / 2, CG.lb[1] + CG.lb[3] / 2]
 const SIT = { ...POSES.stand, armA: 90, foreA: 0, armB: -14, foreB: -4, thighA: 90, shinA: -90, thighB: 87, shinB: -85 }
 
-// La placa: antes de la foto está en blanco (un chasis gris); después lleva la radiografía del brazo.
+// La placa: antes de la foto está en blanco (un chasis gris); después lleva la radiografía de la mano.
 function Placa({ fy = 1, exposed }) {
   const thin = fy < 0.3
   return (
@@ -222,7 +223,7 @@ function Placa({ fy = 1, exposed }) {
     </g>
   )
 }
-const INSERT = 2.3 // segundos: aparece la placa, se pone en la mesa y el niño apoya el brazo
+const INSERT = 2.3 // segundos: aparece la placa, se pone en la mesa y el niño apoya la mano
 
 function Taburete({ x, y, floor }) {
   return (
@@ -310,6 +311,11 @@ export function CamaraGigante({ step }) {
 const LZ = { mx: 700, my: 130, ms: 0.7, kx: 1098, ky: 790, ks: 0.85 }
 const LZ_SRC = [LZ.mx + 250 * LZ.ms, LZ.my + 392 * LZ.ms]
 const ARM_OUT = { ...POSES.stand, armA: 88, foreA: -4 }
+// manos de la clase que se levantan para probarse el chaleco
+const VOLUNTARIOS = [
+  { x: 200, skin: '#f6c39c', sleeve: '#3fa7ff' }, { x: 500, skin: '#a8714d', sleeve: '#7cd957' }, { x: 770, skin: '#e7ae86', sleeve: '#ff5fa2' },
+  { x: 1440, skin: '#f9d3b4', sleeve: '#ffd23f' }, { x: 1740, skin: '#c98e68', sleeve: '#3fe0ff' },
+]
 
 export function LuzChaleco({ step }) {
   const t = useClock()
@@ -318,6 +324,7 @@ export function LuzChaleco({ step }) {
   useOnMount(() => sfx.magic(), 300)
   useOnStep(step, 1, () => { sfx.whoosh(); setTimeout(() => sfx.clank(), 430) })
   useOnStep(step, 2, () => { sfx.sparkle(); setTimeout(() => burst(0.58, 0.45, { particleCount: 50 }), 300) })
+  useOnStep(step, 3, () => sfx.tada())
 
   let drop = step === 0 ? null : 0
   let pose = addPose(ARM_OUT, { foreB: Math.sin(t * 2) * 3 })
@@ -334,7 +341,7 @@ export function LuzChaleco({ step }) {
   const handPt = [LZ.kx + (-66 - 196) * LZ.ks, LZ.ky - 176 * LZ.ks]
 
   const rays = []
-  if (step >= 2) {
+  if (step === 2) {
     for (let k = 0; k < 3; k++) {
       const P = 1.5, ph = (since - 0.4 - k * 0.5) / P
       if (ph < 0) continue
@@ -362,12 +369,8 @@ export function LuzChaleco({ step }) {
       <svg className="full" viewBox="0 0 1920 1080">
         <defs><clipPath id="lz-waves"><polygon points={`${LZ_SRC[0] - 40},${LZ_SRC[1] - 20} ${LZ_SRC[0] + 40},${LZ_SRC[1] - 20} 1700,1080 ${LZ_SRC[0] - 640},1080`} /></clipPath></defs>
         <g clipPath="url(#lz-waves)">{waves}</g>
-        <g transform={`translate(${LZ.mx} ${LZ.my}) scale(${LZ.ms})`}><XrayMachine t={t} beam={step >= 2 ? 0.55 + Math.sin(t * 8) * 0.1 : 0} mood={step === 0 ? 'wow' : 'smile'} look={1} /></g>
-        {step >= 2 && (
-          <g>
-            <Brackets x={handPt[0] - 70} y={handPt[1] - 70} w={140} h={140} len={34} sw={9} />
-          </g>
-        )}
+        <g transform={`translate(${LZ.mx} ${LZ.my}) scale(${LZ.ms})`}><XrayMachine t={t} beam={step === 2 ? 0.55 + Math.sin(t * 8) * 0.1 : 0} mood={step === 0 ? 'wow' : 'smile'} look={1} /></g>
+        {step === 2 && <Brackets x={handPt[0] - 70} y={handPt[1] - 70} w={140} h={140} len={34} sw={9} />}
         <g transform={`translate(${LZ.kx} ${LZ.ky}) scale(${LZ.ks})`}>
           <Kid pose={pose} kid={KIDS.vega} expression={expression} vest={drop} />
         </g>
@@ -379,10 +382,11 @@ export function LuzChaleco({ step }) {
             {r.hitNow && <Star x={r.hit[0]} y={r.hit[1]} r={46} fill="#fff27a" stroke="#ffd23f" rot={t * 200} />}
           </g>
         ))}
+        {step >= 3 && VOLUNTARIOS.map((a, i) => <RaisedArm key={i} {...a} k={easeOut(prog(since, 0.2 + i * 0.12, 0.6))} t={t} ph={i} />)}
       </svg>
       <AnimatePresence mode="wait">
-        <Bouncy key={step} text={['¡Luz invisible muy potente!', '¡Un chaleco protector!', '¡Protege lo que no sale en la foto!'][Math.min(step, 2)]}
-          className={step === 0 ? 'hl' : 'hl-purple'} stagger={0.03} style={{ top: 40, fontSize: step === 2 ? 92 : 108 }} />
+        <Bouncy key={step} text={['¡Luz invisible muy potente!', '¡Un chaleco protector!', '¡Protege lo que no sale en la foto!', '¿Quién se lo quiere probar?'][Math.min(step, 3)]}
+          className={step === 0 ? 'hl' : 'hl-purple'} stagger={0.03} style={{ top: 40, fontSize: step >= 2 ? 96 : 108 }} />
       </AnimatePresence>
       {step === 1 && since > 1.3 && <Pop className="bubble" style={{ left: 1230, top: 330, fontSize: 64 }}>¡Pesa un poco!</Pop>}
     </>
