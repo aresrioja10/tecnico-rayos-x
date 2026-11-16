@@ -42,8 +42,8 @@ export const SLIDES = [
     notes: 'Enseña las placas de verdad, una a una: «¿Qué veis en esta radiografía?» (dejar que adivinen)\n(clic) La pantalla se pone blanca como una caja de luz: pon la placa delante del proyector o de la pantalla y se verá mejor. Toca la pantalla para volver.' },
 
   // 6. ¡A JUGAR! (≈6 min)
-  { id: 'puzzle', section: 6, title: 'Juego: puzzle de radiografías', C: Puzzle, steps: 2,
-    notes: '«¡Vamos a jugar! Tenemos un puzzle con radiografías de la cabeza, las manos, el cuerpo…» Repartid las piezas y que lo monten.\n(clic) Las piezas se colocan solas: «¡Un esqueleto entero!»' },
+  { id: 'puzzle', section: 6, title: 'Juego: puzzle de radiografías', C: Puzzle, steps: 1,
+    notes: '«¡Vamos a jugar! Tenemos un puzzle con radiografías de la cabeza, las manos, el cuerpo…» Repartid las piezas y que lo monten ellos en la mesa.\n· En pantalla solo salen las piezas sueltas; si tocas una, se menea.' },
   { id: 'bastoncillos', section: 6, title: 'Juego: tu radiografía con bastoncillos', C: Bastoncillos, steps: 4,
     notes: '«Ahora cada uno va a hacer su propia radiografía de la mano.» Materiales: cartulina negra, lápiz blanco, bastoncillos y pegamento.\n(clic) «Primero dibujamos el contorno de la mano.»\n(clic) «Luego pegamos los bastoncillos: son los huesos de los dedos.»\n(clic) «¡Ya tenéis vuestra radiografía de la mano!»' },
 ]

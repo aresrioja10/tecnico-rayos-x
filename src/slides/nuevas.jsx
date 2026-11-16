@@ -490,16 +490,17 @@ export function QueVes({ step, setStep }) {
 }
 
 // =====================================================================
-// 8a. JUEGO: PUZZLE DE RADIOGRAFÍAS
+// 8a. JUEGO: PUZZLE DE RADIOGRAFÍAS (desarmado: lo montan los peques en la mesa)
 // =====================================================================
-const PZ = { cx: 960, cy: 650, s: 1.18 }
+const PZ = { s: 1.3 }
+// r: trozo del esqueleto (coordenadas del niño); at: dónde queda en la pantalla [x, y, giro]
 const PIECES = [
-  { id: 'cabeza', r: [-150, -395, 150, -200], from: [300, 360, -12] },
-  { id: 'pecho', r: [-150, -200, 150, -40], from: [1620, 380, 9] },
-  { id: 'manoA', r: [-150, -40, -45, 80], from: [250, 790, 14] },
-  { id: 'tripa', r: [-45, -40, 45, 80], from: [1690, 830, -10] },
-  { id: 'manoB', r: [45, -40, 150, 80], from: [540, 600, -8] },
-  { id: 'piernas', r: [-150, 80, 150, 305], from: [1420, 640, 6] },
+  { id: 'cabeza', r: [-150, -395, 150, -200], at: [400, 420, -10] },
+  { id: 'pecho', r: [-150, -200, 150, -40], at: [1520, 410, 8] },
+  { id: 'tripa', r: [-45, -40, 45, 80], at: [960, 360, 10] },
+  { id: 'piernas', r: [-150, 80, 150, 305], at: [980, 760, -4] },
+  { id: 'manoA', r: [-150, -40, -45, 80], at: [380, 840, 14] },
+  { id: 'manoB', r: [45, -40, 150, 80], at: [1560, 830, -12] },
 ]
 
 function PuzzlePiece({ p }) {
@@ -517,45 +518,30 @@ function PuzzlePiece({ p }) {
   )
 }
 
-export function Puzzle({ step }) {
+export function Puzzle() {
   const t = useClock()
-  const since = useSince(step, t)
-  useOnMount(() => sfx.magic(), 300)
-  useOnStep(step, 1, () => {
-    PIECES.forEach((_, i) => setTimeout(() => sfx.blip(i * 3), 450 + i * 380))
-    setTimeout(() => { sfx.fanfare(); party() }, 450 + PIECES.length * 380 + 200)
-  })
-  const done = step >= 1 && since > 0.45 + PIECES.length * 0.38 + 0.2
-  const [bx0, by0, bx1, by1] = [-150, -395, 150, 305].map((v, i) => (i % 2 ? PZ.cy : PZ.cx) + v * PZ.s)
+  const [wig, setWig] = useState({})
+  useOnMount(() => PIECES.forEach((_, i) => setTimeout(() => sfx.blip(i * 3), 900 + i * 150)), 0)
+  const poke = (id) => { sfx.boing(); setWig((w) => ({ ...w, [id]: t })) }
   return (
     <>
       <svg className="full" viewBox="0 0 1920 1080">
-        <rect x={bx0 - 24} y={by0 - 24} width={bx1 - bx0 + 48} height={by1 - by0 + 48} rx={30} fill="#d6e0ee" stroke="#24324d" strokeWidth={7} />
-        <rect x={bx0 - 6} y={by0 - 6} width={bx1 - bx0 + 12} height={by1 - by0 + 12} rx={16} fill={done ? '#eef7ff' : '#9aa9bf'} />
-        {PIECES.map((p) => {
-          const [x0, y0, x1, y1] = p.r
-          return <rect key={p.id} x={PZ.cx + x0 * PZ.s + 6} y={PZ.cy + y0 * PZ.s + 6} width={(x1 - x0) * PZ.s - 12} height={(y1 - y0) * PZ.s - 12} rx={10} fill="none" stroke="#24324d" strokeOpacity={0.35} strokeWidth={5} strokeDasharray="16 12" />
-        })}
         {PIECES.map((p, i) => {
-          const [x0, y0, x1, y1] = p.r
-          const home = [PZ.cx + ((x0 + x1) / 2) * PZ.s, PZ.cy + ((y0 + y1) / 2) * PZ.s]
-          const [fx, fyy, fr] = p.from
-          const bob = step === 0 ? Math.sin(t * 2 + i * 1.3) * 14 : 0
+          const [x, y, rot] = p.at
+          const bob = Math.sin(t * 1.8 + i * 1.3) * 12
+          const w = wig[p.id] != null ? t - wig[p.id] : 9
+          const shake = w < 0.6 ? Math.sin(w * 40) * 10 * (1 - w / 0.6) : 0
           return (
-            <motion.g key={p.id} initial={false}
-              animate={step >= 1 ? { x: home[0], y: home[1], rotate: 0, scale: 1 } : { x: fx, y: fyy, rotate: fr, scale: 0.9 }}
-              transition={step >= 1 ? { type: 'spring', stiffness: 90, damping: 14, delay: 0.3 + i * 0.38 } : { type: 'spring', stiffness: 80, damping: 15 }}>
-              <g transform={`translate(0 ${bob})`} filter="url(#shadow)"><PuzzlePiece p={p} /></g>
+            <motion.g key={p.id} initial={{ x: 960, y: 600, rotate: rot - 90, scale: 0 }} animate={{ x, y, rotate: rot, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 110, damping: 13, delay: 0.9 + i * 0.15 }}>
+              <g transform={`translate(0 ${bob}) rotate(${shake})`} filter="url(#shadow)" onClick={() => poke(p.id)} style={{ cursor: 'pointer' }}>
+                <PuzzlePiece p={p} />
+              </g>
             </motion.g>
           )
         })}
-        {done && <Sparkles t={t} points={[[bx0 - 60, by0 + 40], [bx1 + 60, by0 + 120], [bx1 + 50, by1 - 60], [bx0 - 50, by1 - 120]]} color="#bff6ff" size={36} />}
       </svg>
-      <AnimatePresence mode="wait">
-        {done
-          ? <Bouncy key="b" text="¡Un esqueleto entero!" className="hl-cyan" style={{ top: 34, fontSize: 112 }} />
-          : <Bouncy key="a" text="¡Puzzle de radiografías!" className="hl" style={{ top: 34, fontSize: 112 }} />}
-      </AnimatePresence>
+      <Bouncy text="¡Puzzle de radiografías!" className="hl" style={{ top: 34, fontSize: 112 }} />
     </>
   )
 }
