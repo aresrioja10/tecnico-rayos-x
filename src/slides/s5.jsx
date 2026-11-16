@@ -90,7 +90,7 @@ function Feather({ rot = 0 }) {
   )
 }
 
-function RaisedArm({ x, k, skin, sleeve, t, ph }) {
+export function RaisedArm({ x, k, skin, sleeve, t, ph }) {
   const ang = Math.sin(t * 5 + ph) * 12
   const y = 1080 + (1 - k) * 420
   return (
