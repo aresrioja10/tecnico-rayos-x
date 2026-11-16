@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useClock, useSince, addPose, prog, easeOut, easeInOut, clamp, lerp } from '../lib/anim.js'
 import { Kid, POSES, KIDS } from '../art/Figure.jsx'
-import { HandSkin, FINGERS } from '../art/Hand.jsx'
+import { HandSkin, HandXray, FINGERS } from '../art/Hand.jsx'
 import { XrayMachine, Table, CuteCamera, Lightbox } from '../art/Machine.jsx'
 import { Bouncy, Pop, Sparkles, Sunburst, Star, useOnStep, useOnMount, useFlash, svgPoint } from './ui.jsx'
 import { BadgeIcon } from './s2.jsx'
@@ -25,7 +25,7 @@ function Brackets({ x, y, w, h, color = '#ffd23f', len = 80, sw = 14, opacity = 
   )
 }
 
-export function QueEs({ step, settings }) {
+export function QueEs({ step }) {
   const t = useClock()
   const since = useSince(step, t)
   const [flash, flashEl] = useFlash()
@@ -42,7 +42,7 @@ export function QueEs({ step, settings }) {
   const cone = step >= 1 ? clamp(1 - since / 0.9) : 0
   const bob = Math.sin(t * 2.2) * 8
   const lens = [140 + 260 * 1.05, 360 + bob + 226 * 1.05]
-  const nombre = (settings?.nombre || '').trim()
+  const nombre = 'Bea'
   return (
     <>
       <svg className="full" viewBox="0 0 1920 1080">
@@ -84,10 +84,10 @@ export function QueEs({ step, settings }) {
       </svg>
       <AnimatePresence mode="wait">
         {step === 0
-          ? <Bouncy key="a" text="¿Qué es un técnico de rayos?" style={{ top: 34, fontSize: 104 }} />
-          : <Bouncy key="b" text="¡Un fotógrafo del interior del cuerpo!" className="hl-cyan" stagger={0.025} style={{ top: 34, fontSize: 92 }} />}
+          ? <Bouncy key="a" text="¿Qué es una técnica de rayos?" style={{ top: 34, fontSize: 104 }} />
+          : <Bouncy key="b" text="¡Una fotógrafa de huesos!" className="hl-cyan" style={{ top: 34, fontSize: 112 }} />}
       </AnimatePresence>
-      {step === 0 && nombre && (
+      {step === 0 && (
         <Pop delay={0.5} className="chip-label" style={{ left: 60, top: 230, background: '#ffd23f', fontSize: 52 }}>¡Hola! Soy {nombre}</Pop>
       )}
       {flashEl}
@@ -193,18 +193,22 @@ export const LupaPulmones = (p) => (
 )
 export const LupaTripa = (p) => (
   <LupaCuerpo {...p} kid={KIDS.sol} Organs={Tummy} BK={{ x: 960, y: 880, s: 1.8 }} focus={-45} amp={[120, 50]}
-    titles={['¿Y en la tripa?', '¡La tripa!']} chip="¡Por aquí pasa la comida!" chipColor="#ff9fc5" />
+    titles={['¿Y aquí?', '¡La tripa!']} />
 )
 
 // =====================================================================
-// 4. LA CÁMARA GIGANTE (sin textos): la placa entra en la camilla, ¡clack!,
-//    sale y se ve en el negatoscopio.
+// 4. LA CÁMARA GIGANTE (sin textos): placa del brazo. El niño está sentado,
+//    apoya el brazo sobre la placa, ¡clack!, y la radiografía va al negatoscopio.
 // =====================================================================
-const CG = { mx: 330, my: 40, ms: 1.05, tray: [610, 821], out: [1080, 821], lb: [1240, 200, 560, 700] }
+const CG = { tx: 300, ty: 662, tsx: 0.85, tsy: 1.4, kx: 954, ky: 848, ks: 1, ms: 0.9, lb: [1300, 190, 540, 700] }
+CG.top = CG.ty + 20 * CG.tsy // superficie de la mesa
+CG.hand = [CG.kx - 291 * CG.ks, CG.top - 7] // donde queda la placa, debajo de la mano
+CG.mx = CG.hand[0] - 250 * CG.ms
+CG.my = CG.top - 720 * CG.ms
 const LB_C = [CG.lb[0] + CG.lb[2] / 2, CG.lb[1] + CG.lb[3] / 2]
-const LYING = { ...POSES.stand, armA: 8, armB: -8 }
+const SIT = { ...POSES.stand, armA: 90, foreA: 0, armB: -14, foreB: -4, thighA: 90, shinA: -90, thighB: 87, shinB: -85 }
 
-// La placa: antes de la foto está en blanco (un chasis gris); después lleva el esqueleto.
+// La placa: antes de la foto está en blanco (un chasis gris); después lleva la radiografía del brazo.
 function Placa({ fy = 1, exposed }) {
   const thin = fy < 0.3
   return (
@@ -214,11 +218,21 @@ function Placa({ fy = 1, exposed }) {
         <rect x={-210} y={-280} width={420} height={560} rx={12} fill="#24304a" />
         <rect x={-90} y={-318} width={180} height={26} rx={10} fill="#c9d6ea" />
       </>}
-      {!thin && exposed && <g transform="translate(0 30) scale(0.92)"><Kid pose={POSES.stand} kid={KIDS.leo} xray /></g>}
+      {!thin && exposed && <g transform="translate(-232 -317) scale(0.775)"><HandXray /></g>}
     </g>
   )
 }
-const INSERT = 2.2 // segundos que tarda la placa en aparecer y meterse en la camilla
+const INSERT = 2.3 // segundos: aparece la placa, se pone en la mesa y el niño apoya el brazo
+
+function Taburete({ x, y, floor }) {
+  return (
+    <g stroke="#24324d" strokeWidth={6} strokeLinejoin="round">
+      <rect x={x - 22} y={y + 18} width={18} height={floor - y - 18} rx={6} fill="#8fa0bf" transform={`rotate(6 ${x - 13} ${y + 18})`} />
+      <rect x={x + 96} y={y + 18} width={18} height={floor - y - 18} rx={6} fill="#8fa0bf" transform={`rotate(-6 ${x + 105} ${y + 18})`} />
+      <rect x={x - 40} y={y} width={170} height={30} rx={14} fill="#ff8a5c" />
+    </g>
+  )
+}
 
 export function CamaraGigante({ step }) {
   const t = useClock()
@@ -230,53 +244,58 @@ export function CamaraGigante({ step }) {
     setRun({ insertAt, clackAt: t + delay })
     if (reinsert) setTimeout(() => sfx.swoosh(), 50)
     setTimeout(() => { sfx.clack(); flash() }, delay * 1000)
-    setTimeout(() => sfx.whoosh(), (delay + 1.1) * 1000)
-    setTimeout(() => { sfx.magic(); burst(0.8, 0.5, { particleCount: 70 }) }, (delay + 2.4) * 1000)
+    setTimeout(() => sfx.whoosh(), (delay + 1.5) * 1000)
+    setTimeout(() => { sfx.magic(); burst(0.82, 0.5, { particleCount: 70 }) }, (delay + 2.5) * 1000)
   }
   useOnStep(step, 1, () => fire(false))
   useOnMount(() => sfx.swoosh(), 450)
   const ct = run.clackAt == null ? -1 : t - run.clackAt
   const it = t - run.insertAt
+  const before = ct < 0 || run.clackAt == null
   const beam = ct >= 0 && ct < 1.0 ? (ct < 0.8 ? 1 : 1 - (ct - 0.8) / 0.2) * (0.75 + Math.sin(t * 40) * 0.25) : 0
-  let px, py, s = 0.42, fy = 0.09, inTray = true
-  if (ct < 0 || run.clackAt == null) {
-    // 1) aparece la placa en blanco, 2) se tumba, 3) entra en la camilla
-    const k1 = easeOut(prog(it, 0, 0.5)), k2 = easeInOut(prog(it, 0.9, 0.5)), k3 = easeInOut(prog(it, 1.45, 0.7))
-    px = lerp(1085, CG.tray[0], k3); py = lerp(540, CG.tray[1], k2)
-    s = lerp(0.5 * k1, 0.42, k2); fy = lerp(1, 0.09, k2)
-  } else if (ct < 1.1) { px = CG.tray[0]; py = CG.tray[1] }
-  else if (ct < 1.6) { const k = easeInOut((ct - 1.1) / 0.5); px = lerp(CG.tray[0], CG.out[0], k); py = CG.tray[1] }
+  // la placa
+  let px, py, s = 0.42, fy = 0.09, onTable = true
+  if (before) {
+    const k1 = easeOut(prog(it, 0, 0.5)), k2 = easeInOut(prog(it, 0.9, 0.7))
+    px = lerp(1160, CG.hand[0], k2); py = lerp(320, CG.hand[1], k2) - Math.sin(Math.PI * k2) * 120
+    s = lerp(0.45 * k1, 0.42, k2); fy = lerp(1, 0.09, k2)
+  } else if (ct < 1.6) { px = CG.hand[0]; py = CG.hand[1] }
   else {
-    const k = easeInOut(clamp((ct - 1.6) / 0.9)); inTray = false
-    px = lerp(CG.out[0], LB_C[0], k); py = lerp(CG.out[1], LB_C[1], k) - Math.sin(Math.PI * k) * 160
+    const k = easeInOut(clamp((ct - 1.6) / 0.9)); onTable = false
+    px = lerp(CG.hand[0], LB_C[0], k); py = lerp(CG.hand[1], LB_C[1], k) - Math.sin(Math.PI * k) * 220
     s = lerp(0.42, 1, k); fy = lerp(0.09, 1, k)
   }
+  // el brazo: levantado, se apoya en la placa para la foto y luego saluda
+  const down = before ? easeInOut(prog(it, 1.6, 0.6)) : ct < 1.1 ? 1 : 1 - easeInOut(clamp((ct - 1.1) / 0.5))
+  const wave = (1 - down) * Math.sin(t * 6) * 14
+  const pose = addPose(SIT, { armA: (1 - down) * 60, foreA: (1 - down) * 20 + wave, y: Math.sin(t * 2.2) * 2 * (1 - down) })
   const arrived = ct >= 2.5
   const busy = (run.clackAt != null && ct < 2.6) || it < INSERT
   const plate = <g transform={`translate(${px} ${py}) scale(${s} ${s * fy})`}><Placa fy={fy} exposed={ct >= 0.2} /></g>
   const clackK = ct >= 0 && ct < 0.9 ? ct : null
+  const floor = CG.ky + 135 * CG.ks
   return (
     <>
       <svg className="full" viewBox="0 0 1920 1080">
         <g transform={`translate(${CG.lb[0]} ${CG.lb[1]})`}><Lightbox w={CG.lb[2]} h={CG.lb[3]} on={arrived ? 1 : 0.25} /></g>
-        {arrived && <Sparkles t={t} points={[[1230, 220], [1810, 260], [1820, 860], [1220, 880]]} color="#bff6ff" size={34} />}
-        {inTray && plate}
-        <g transform={`translate(230 ${CG.my + 720 * CG.ms})`}><Table /></g>
-        <rect x={360} y={812} width={520} height={18} rx={9} fill="#24324d" opacity={0.85} />
-        <g transform="translate(640 734) rotate(-90) scale(0.72)"><Kid pose={LYING} kid={KIDS.leo} expression={beam > 0 ? 'wow' : 'happy'} /></g>
-        <g transform={`translate(${CG.mx} ${CG.my + (beam > 0 ? 18 : 0)}) scale(${CG.ms})`} onClick={() => !busy && fire(true)} style={{ cursor: 'pointer' }}>
+        {arrived && <Sparkles t={t} points={[[1290, 210], [1850, 250], [1860, 860], [1280, 880]]} color="#bff6ff" size={34} />}
+        <g transform={`translate(${CG.tx} ${CG.ty}) scale(${CG.tsx} ${CG.tsy})`}><Table /></g>
+        <Taburete x={CG.kx - 60 * CG.ks} y={CG.ky + 24 * CG.ks} floor={floor} />
+        {onTable && plate}
+        <g transform={`translate(${CG.kx} ${CG.ky}) scale(${CG.ks})`}><Kid pose={pose} kid={KIDS.leo} expression={beam > 0 ? 'wow' : 'happy'} /></g>
+        <g transform={`translate(${CG.mx} ${CG.my + (beam > 0 ? 14 : 0)}) scale(${CG.ms})`} onClick={() => !busy && fire(true)} style={{ cursor: 'pointer' }}>
           <XrayMachine t={t} beam={beam} mood={beam > 0 ? 'wow' : 'smile'} look={ct > 1 ? 1 : 0} />
         </g>
         {clackK != null && (
-          <g transform={`translate(1000 250) scale(${easeOut(clamp(clackK / 0.25)) * (1 - clamp((clackK - 0.6) / 0.3))}) rotate(-8)`}>
+          <g transform={`translate(1090 250) scale(${easeOut(clamp(clackK / 0.25)) * (1 - clamp((clackK - 0.6) / 0.3))}) rotate(-8)`}>
             <Star x={0} y={0} r={190} fill="#ffd23f" stroke="#e8304a" />
             <text x={0} y={30} textAnchor="middle" fontSize={92} fontWeight={700} fill="#e8304a" style={{ fontFamily: 'var(--font)' }}>¡CLACK!</text>
           </g>
         )}
-        {!inTray && plate}
+        {!onTable && plate}
       </svg>
       {step >= 1 && !busy && (
-        <Pop style={{ position: 'absolute', left: 1020, top: 900 }}>
+        <Pop style={{ position: 'absolute', left: 1110, top: 900 }}>
           <button className="big-btn" title="Otra foto" style={{ position: 'static', width: 120, height: 120, borderRadius: 999, padding: 0, fontSize: 60 }} onClick={() => fire(true)}>📸</button>
         </Pop>
       )}
